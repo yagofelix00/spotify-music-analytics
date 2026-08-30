@@ -29,3 +29,7 @@ data/processed/*
 
 # Reference materials
 Spotify Data Analysis - pdf.pdf
+
+# Spotipy cache
+.cache
+.cache-*
