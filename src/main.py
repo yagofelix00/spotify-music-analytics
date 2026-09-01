@@ -1,27 +1,49 @@
+import pandas as pd
+
 from src.spotify_client import get_spotify_client
+
+
+ARTIST_NAMES = [
+    "Eminem",
+    "Linkin Park",
+    "Pink Floyd",
+    "Dire Straits",
+    "Eagles",
+]
 
 
 def main():
     spotify = get_spotify_client()
 
-    results = spotify.search(
-        q="Eminem",
-        type="artist",
-        limit=1,
-    )
+    artists_data = []
 
-    artists = results["artists"]["items"]
+    for artist_name in ARTIST_NAMES:
+        results = spotify.search(
+            q=artist_name,
+            type="artist",
+            limit=1,
+        )
 
-    if not artists:
-        print("Artist not found.")
-        return
+        artists = results["artists"]["items"]
 
-    artist = artists[0]
+        if not artists:
+            print(f"Artist not found: {artist_name}")
+            continue
 
-    print(f"Name: {artist['name']}")
-    print(f"Spotify ID: {artist['id']}")
-    print(f"Type: {artist['type']}")
-    print(f"Spotify URL: {artist['external_urls']['spotify']}")
+        artist = artists[0]
+
+        artists_data.append(
+            {
+                "spotify_id": artist["id"],
+                "name": artist["name"],
+                "type": artist["type"],
+                "spotify_url": artist["external_urls"]["spotify"],
+            }
+        )
+
+    df = pd.DataFrame(artists_data)
+
+    print(df)
 
 
 if __name__ == "__main__":
