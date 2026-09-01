@@ -14,11 +14,25 @@ def get_artist_by_name(spotify, artist_name: str):
 
 
 def get_artist_albums(spotify, artist_id: str):
-    results = spotify.artist_albums(
-        artist_id,
-        album_type="album",
-        limit=10,
-    )
+    albums = []
+    limit = 10
+    offset = 0
 
-    return results["items"]
+    while True:
+        results = spotify.artist_albums(
+            artist_id,
+            album_type="album",
+            limit=limit,
+            offset=offset,
+        )
+
+        items = results["items"]
+        albums.extend(items)
+
+        if not results["next"]:
+            break
+
+        offset += limit
+
+    return albums
 
