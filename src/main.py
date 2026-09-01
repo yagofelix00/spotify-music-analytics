@@ -1,5 +1,6 @@
 import pandas as pd
 
+from src.extract import get_artist_albums, get_artist_by_name
 from src.spotify_client import get_spotify_client
 
 
@@ -15,33 +16,34 @@ ARTIST_NAMES = [
 def main():
     spotify = get_spotify_client()
 
-    artists_data = []
+    albums_data = []
 
     for artist_name in ARTIST_NAMES:
-        results = spotify.search(
-            q=artist_name,
-            type="artist",
-            limit=1,
-        )
+        artist = get_artist_by_name(spotify, artist_name)
 
-        artists = results["artists"]["items"]
-
-        if not artists:
+        if not artist:
             print(f"Artist not found: {artist_name}")
             continue
 
-        artist = artists[0]
-
-        artists_data.append(
-            {
-                "spotify_id": artist["id"],
-                "name": artist["name"],
-                "type": artist["type"],
-                "spotify_url": artist["external_urls"]["spotify"],
-            }
+        albums = get_artist_albums(
+            spotify,
+            artist["id"],
         )
 
-    df = pd.DataFrame(artists_data)
+        for album in albums:
+            albums_data.append(
+                {
+                    "spotify_id": album["id"],
+                    "name": album["name"],
+                    "artist_id": artist["id"],
+                    "artist_name": artist["name"],
+                    "album_type": album["album_type"],
+                    "total_tracks": album["total_tracks"],
+                    "spotify_url": album["external_urls"]["spotify"],
+                }
+            )
+
+    df = pd.DataFrame(albums_data)
 
     print(df)
 
