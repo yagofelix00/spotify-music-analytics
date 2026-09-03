@@ -36,3 +36,25 @@ def get_artist_albums(spotify, artist_id: str):
 
     return albums
 
+
+def get_album_tracks(spotify, album_id: str):
+    tracks = []
+    limit = 50
+    offset = 0
+
+    while True:
+        results = spotify.album_tracks(
+            album_id,
+            limit=limit,
+            offset=offset,
+        )
+
+        items = results["items"]
+        tracks.extend(items)
+
+        if not results["next"]:
+            break
+
+        offset += limit
+
+    return tracks
