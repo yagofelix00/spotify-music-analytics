@@ -41,3 +41,19 @@ def transform_albums(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
+
+def transform_tracks(df: pd.DataFrame) -> pd.DataFrame:
+    df = clean_text_columns(
+        df,
+        [
+            "spotify_id",
+            "name",
+            "album_id",
+            "album_name",
+            "artist_id",
+            "artist_name",
+            "spotify_url",
+        ],
+    )
+
+    return df
