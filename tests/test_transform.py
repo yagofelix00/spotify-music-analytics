@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.transform import transform_albums, transform_artists, transform_tracks
+from src.transform import transform_artists, transform_albums, transform_tracks, add_track_features
 
 
 def test_transform_artists_strips_text_columns():
@@ -75,3 +75,17 @@ def test_transform_tracks_strips_text_columns():
     assert result.loc[0, "artist_id"] == "artist123"
     assert result.loc[0, "artist_name"] == "Eminem"
     assert result.loc[0, "spotify_url"] == "https://open.spotify.com/track/track123"
+
+def test_add_track_features_creates_duration_columns():
+    df = pd.DataFrame(
+        [
+            {
+                "duration_ms": 180000,
+            }
+        ]
+    )
+
+    result = add_track_features(df)
+
+    assert result.loc[0, "duration_seconds"] == 180
+    assert result.loc[0, "duration_minutes"] == 3

@@ -57,3 +57,11 @@ def transform_tracks(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     return df
+
+def add_track_features(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+
+    df["duration_seconds"] = df["duration_ms"] / 1000
+    df["duration_minutes"] = df["duration_seconds"] / 60
+
+    return df
