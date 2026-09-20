@@ -1,6 +1,11 @@
 from src.data_quality import load_raw_dataset
-from src.transform import transform_albums, transform_artists, transform_tracks, add_track_features
-
+from src.transform import (
+    transform_albums, 
+    transform_artists, 
+    transform_tracks, 
+    add_track_features
+    )
+from src.validate import validate_relationships
 
 def main():
     artists_raw = load_raw_dataset("artists.csv")
@@ -26,6 +31,16 @@ def main():
     print(f"Processed shape: {tracks_processed.shape}")
     print(f"Data changed: {not tracks_raw.equals(tracks_processed)}")
 
+    validation = validate_relationships(
+        artists_processed,
+        albums_processed,
+        tracks_processed,
+    )
+
+    print("\nRELATIONSHIP VALIDATION")
+
+    for key, value in validation.items():
+        print(f"{key}: {value}")
 
 if __name__ == "__main__":
     main()
