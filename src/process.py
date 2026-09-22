@@ -6,6 +6,7 @@ from src.transform import (
     add_track_features
     )
 from src.validate import validate_relationships
+from src.load import save_processed_dataframe
 
 def main():
     artists_raw = load_raw_dataset("artists.csv")
@@ -42,5 +43,9 @@ def main():
     for key, value in validation.items():
         print(f"{key}: {value}")
 
+    save_processed_dataframe(artists_processed, "artists.csv")
+    save_processed_dataframe(albums_processed, "albums.csv")
+    save_processed_dataframe(tracks_processed, "tracks.csv")
+    
 if __name__ == "__main__":
     main()

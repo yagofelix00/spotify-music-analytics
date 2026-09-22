@@ -1,7 +1,7 @@
 import pandas as pd
 
 from src.extract import get_album_tracks, get_artist_albums, get_artist_by_name
-from src.load import save_dataframe
+from src.load import save_raw_dataframe
 from src.spotify_client import get_spotify_client
 
 
@@ -81,9 +81,9 @@ def main():
     albums_df = pd.DataFrame(albums_data)
     tracks_df = pd.DataFrame(tracks_data)
 
-    save_dataframe(artists_df, "artists.csv")
-    save_dataframe(albums_df, "albums.csv")
-    save_dataframe(tracks_df, "tracks.csv")
+    save_raw_dataframe(artists_df, "artists.csv")
+    save_raw_dataframe(albums_df, "albums.csv")
+    save_raw_dataframe(tracks_df, "tracks.csv")
 
 
 if __name__ == "__main__":
